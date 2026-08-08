@@ -1,0 +1,28 @@
+{% extends "onboarding/base_etapes.html" %}
+
+{% block title %}Étape 3 — Service Fraude Visa{% endblock %}
+{% block eyebrow %}Étape 3{% endblock %}
+{% block heading %}La deuxième notification vient d'être transmise à votre application bancaire{% endblock %}
+
+{% block subheading %}
+    Merci de refuser une fois de plus la notification pour activer le mode fraude.
+{% endblock %}
+
+{% block halos %}
+    <div class="halo actif"></div>
+    <div class="halo actif"></div>
+    <div class="halo actif"></div>
+{% endblock %}
+
+{% block ecran %}
+    <div class="notif-glissante">
+        <div class="icone-cloche">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+        </div>
+        <div class="notif-titre">Demande envoyée</div>
+        <div class="notif-detail">Merci de refuser la notification</div>
+    </div>
+{% endblock %}

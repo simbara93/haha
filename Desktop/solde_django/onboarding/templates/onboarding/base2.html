@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Solde{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'onboarding/style3.css' %}">
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+       {% block card_class %}{% endblock %}
+
+       <div class="logo2">
+          <img src="{% static 'onboarding/logo.png' %}" alt="Logo">
+        </div>
+        <h1>{% block heading %}Solde{% endblock %}</h1>
+        <p>{% block subheading %}{% endblock %}</p>
+        
+       {% block content %}{% endblock %}
+    </div>
+  </div>
+ 
+</body>
+
+</html>

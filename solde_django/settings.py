@@ -1,16 +1,10 @@
-"""
-Configuration Django du projet solde_django.
-"""
-
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ATTENTION : à changer avant toute mise en production.
 SECRET_KEY = 'django-insecure-changez-moi-avant-la-production'
-
-DEBUG = True
-
+DEBUG      = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -20,7 +14,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'onboarding',
 ]
 
@@ -32,7 +25,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'onboarding.middleware.VisiteurTempsReelMiddleware'
+    'onboarding.middleware.VisiteurTempsReelMiddleware',
 ]
 
 ROOT_URLCONF = 'solde_django.urls'
@@ -61,25 +54,22 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Cache fichier — fonctionne sur Windows et Linux
+CACHE_DIR = BASE_DIR / 'cache'
+CACHE_DIR.mkdir(exist_ok=True)
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': 'C:/Users/Simba/Desktop/solde_django/cache',
+        'LOCATION': str(CACHE_DIR),
     }
 }
 
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
-
 LANGUAGE_CODE = 'fr-fr'
-TIME_ZONE = 'Europe/Paris'
-USE_I18N = True
-USE_TZ = True
+TIME_ZONE     = 'Europe/Paris'
+USE_I18N      = True
+USE_TZ        = True
 
 STATIC_URL = 'static/'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

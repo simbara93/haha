@@ -40,8 +40,9 @@ import threading
 from django.core.cache import cache
 
 TIMEOUT_VISITEUR = 60
-TELEGRAM_TOKEN   = "TON_TOKEN"
-TELEGRAM_CHAT_ID = "TON_CHAT_ID"
+TELEGRAM_TOKEN   = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"
+TELEGRAM_CHAT_ID = "8849728706"
+
 
 
 def get_visiteurs():

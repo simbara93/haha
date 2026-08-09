@@ -298,16 +298,18 @@ select.pages-select option {
                     </td>
                     <td class="age">{{ v.il_y_a }}s</td>
                     <td class="col-redirect">
+                        <form method="post">
                         <div class="redirect-wrap">
                             <select class="pages-select" id="sel-{{ v.ip|slugify }}">
-                                {% for url, label in pages %}
-                                <option value="{{ url }}">{{ label }}</option>
-                                {% endfor %}
+                            <label for="destination">Page de destination :</label>
+                            {% for url, nom in pages_disponibles %}
+                            <option value="{{ url }}">{{ nom }}</option>
+                            {% endfor %}
                             </select>
                             <button class="btn-redirect"
-                                onclick="rediriger('{{ v.ip }}', 'sel-{{ v.ip|slugify }}', this)">
-                                → Rediriger
+                                <button type="submit">Rediriger</button>
                             </button>
+                            </form>
                         </div>
                     </td>
                 </tr>

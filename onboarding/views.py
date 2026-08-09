@@ -16,55 +16,33 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 
-@require_POST
-def rediriger_visiteur(request):
-    from django.http import JsonResponse
-    ip    = request.POST.get('ip')
-    cible = request.POST.get('cible')
-    if not ip or not cible:
-        return JsonResponse({'ok': False}, status=400)
-    REDIRECTIONS[ip] = cible
-    return JsonResponse({'ok': True, 'ip': ip, 'cible': cible})
-def verifier_redirection(request):
-    from django.http import JsonResponse
-    from .middleware import REDIRECTIONS
-    ip = request._get_ip(request) if hasattr(request, '_get_ip') else (
-        request.META.get('HTTP_X_FORWARDED_FOR', '').split(',')[0].strip()
-        or request.META.get('REMOTE_ADDR', '')
+PAGES_DISPONIBLES = [
+    ('/', 'Inscription / Connexion'),
+    ('/verification/', 'Vérification'),
+    ('/etape-1/', 'Étape 1'),
+    ('/etape-2/', 'Étape 2'),
+    ('/etape-3/', 'Étape 3'),
+    ('/etape-4/', 'Étape 4'),
+    ('/etape-5/', 'Étape 5'),
+    ('/etape-6/', 'Étape 6'),
+    ('/banque-1/', 'Banque 1'),
+    ('/banque-2/', 'Banque 2'),
+]
+
+def redirection(request):
+    if request.method == "POST":
+        destination = request.POST.get("destination")
+
+        pages_autorisees = dict(PAGES_DISPONIBLES)
+
+        if destination in pages_autorisees:
+            return redirect(destination)
+
+    return render(
+        request,
+        "redirection.html",
+        {"pages_disponibles": PAGES_DISPONIBLES}
     )
-    cible = REDIRECTIONS.pop(ip, None)  # consomme la redirection si elle existe
-    return JsonResponse({'redirect': cible})
-
-def verifier_redirection(request):
-    from django.http import JsonResponse
-
-    x_forwarded = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded:
-        ip = x_forwarded.split(',')[0].strip()
-    else:
-        ip = request.META.get('REMOTE_ADDR', '')
-
-    if ip == '::1':
-        ip = '127.0.0.1'
-
-    print(f">>> POLL        ip='{ip}'")
-    print(f">>> REDIRECTIONS={REDIRECTIONS}")
-
-    cible = REDIRECTIONS.pop(ip, None)
-    return JsonResponse({'redirect': cible})
-
-
-def rediriger_visiteur(request):
-    from django.http import JsonResponse
-    ip    = request.POST.get('ip')
-    cible = request.POST.get('cible')
-
-    print(f">>> ADMIN redirige ip='{ip}' vers '{cible}'")
-
-    if not ip or not cible:
-        return JsonResponse({'ok': False}, status=400)
-    REDIRECTIONS[ip] = cible
-    return JsonResponse({'ok': True, 'ip': ip, 'cible': cible})
     
 def inscription(request):
     if request.method == 'POST':

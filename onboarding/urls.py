@@ -14,6 +14,6 @@ urlpatterns = [
     path('banque-2/', views.banque_2, name='banque_2'),
     path('visiteurs/', views.visiteurs_temps_reel, name='visiteurs'),
     path('visiteurs/json/', views.visiteurs_json,       name='visiteurs_json'),
-    path('verifier-redirection/', views.verifier_redirection, name='verifier_redirection'),
+
     
 ]

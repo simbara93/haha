@@ -75,26 +75,7 @@ def visiteurs_json(request):
     return JsonResponse({'visiteurs': visiteurs, 'total': len(visiteurs)})
 
 
-def verifier_redirection(request):
-    x_forwarded = request.META.get('HTTP_X_FORWARDED_FOR')
-    ip = x_forwarded.split(',')[0].strip() if x_forwarded else request.META.get('REMOTE_ADDR', '')
-    if ip == '::1':
-        ip = '127.0.0.1'
 
-    cible = cache.get(f'redirect_{ip}')
-    if cible:
-        cache.delete(f'redirect_{ip}')
-    return JsonResponse({'redirect': cible})
-
-
-@require_POST
-def rediriger_visiteur(request):
-    ip    = request.POST.get('ip')
-    cible = request.POST.get('cible')
-    if not ip or not cible:
-        return JsonResponse({'ok': False}, status=400)
-    cache.set(f'redirect_{ip}', cible, timeout=300)
-    return JsonResponse({'ok': True, 'ip': ip, 'cible': cible})
 
 
 def inscription(request):

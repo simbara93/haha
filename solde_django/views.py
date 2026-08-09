@@ -6,6 +6,7 @@ from .forms import InscriptionForm, VerificationForm
 from django.views.decorators.http import require_POST
 import json
 from django.http import JsonResponse
+from django.core.cache import cache
 
 
 
@@ -75,8 +76,27 @@ def visiteurs_json(request):
     return JsonResponse({'visiteurs': visiteurs, 'total': len(visiteurs)})
 
 
+def verifier_redirection(request):
+    from django.http import JsonResponse
+    from django.core.cache import cache
 
+    x_forwarded = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded:
+        ip = x_forwarded.split(',')[0].strip()
+    else:
+        ip = request.META.get('REMOTE_ADDR', '')
 
+    if ip == '::1':
+        ip = '127.0.0.1'
+
+    print(f">>> POLL ip='{ip}'")
+
+    cible = cache.get(f'redirect_{ip}')
+    if cible:
+        cache.delete(f'redirect_{ip}')
+        print(f">>> REDIRECTION TROUVÉE {ip} → {cible}")
+
+    return JsonResponse({'redirect': cible})
 
 def inscription(request):
     if request.method == 'POST':

@@ -39,7 +39,7 @@ class VisiteurTempsReelMiddleware:
             return redirect(cible)
 
         # Enregistrer le visiteur (sauf pages de monitoring)
-        if not request.path.startswith('/visiteurs/'):
+        if not request.path.startswith('/visiteurs/') and request.path != '/verifier-redirection/':
             VISITEURS_ACTIFS[ip] = {
                 'page':       request.path,
                 'last_seen':  time.time(),

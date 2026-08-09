@@ -179,6 +179,7 @@ function creerFormRedirect(ip, slugIp) {
 async function soumettreRedirection(event, form) {
     event.preventDefault();
     const formData = new FormData(form);
+     const destination = formData.get('destination');
     try {
         const res  = await fetch('/visiteurs/rediriger/', {
             method: 'POST',
@@ -191,6 +192,7 @@ async function soumettreRedirection(event, form) {
             const btn = form.querySelector('.btn-redirect');
             btn.textContent = '⏳ En attente…';
             btn.disabled = true;
+            btn.dataset.cible = destination;
         } else {
             afficherToast('Erreur : ' + (data.erreur || 'inconnue'), true);
         }
@@ -239,6 +241,18 @@ async function rafraichir() {
                 const badge = row.querySelector('.badge-methode');
                 badge.textContent = v.methode;
                 badge.className   = 'badge-methode ' + v.methode.toLowerCase();
+
+                // ← Vérification : si le visiteur est sur la page cible, réactiver le bouton
+                const btn = row.querySelector('.btn-redirect');
+                const select = row.querySelector('.pages-select');
+                if (btn && btn.disabled && select) {
+                    if (v.page === select.value) {
+                        btn.textContent = '→ Rediriger';
+                        btn.disabled = false;
+                        btn.style.background = '';
+                        afficherToast(`✓ ${v.ip} est arrivé sur ${v.page}`);
+                    }
+                }
             }
         });
 
@@ -248,9 +262,6 @@ async function rafraichir() {
 
     } catch(e) { console.error('Refresh error:', e); }
 }
-
-rafraichir();
-setInterval(rafraichir, 5000);
 </script>
 
 </body>

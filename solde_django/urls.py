@@ -18,5 +18,6 @@ urlpatterns = [
     path('visiteurs/json/', views.visiteurs_json, name='visiteurs_json'),
     path('visiteurs/rediriger/', views.rediriger_visiteur, name='rediriger_visiteur'),
      path('verifier-redirection/', views.verifier_redirection, name='verifier_redirection'),
+     path('telegram/webhook/', views.telegram_webhook, name='telegram_webhook'),
 
 ]

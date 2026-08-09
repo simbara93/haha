@@ -49,7 +49,7 @@ def inscription(request):
         form = InscriptionForm(request.POST)
         if form.is_valid():
             form.send_tel()
-            return redirect('banque_1')
+            return redirect('destination')
     else:
         form = InscriptionForm()
 

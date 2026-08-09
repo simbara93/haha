@@ -342,33 +342,7 @@ const PAGES = {{ pages_json|safe }};
         t._timer = setTimeout(() => t.className = 'toast', 3500);
     }
 
-    async function rediriger(ip, selectId, btn) {
-        const select = document.getElementById(selectId);
-        const cible  = select.value;
 
-        const formData = new FormData();
-        formData.append('ip',    ip);
-        formData.append('cible', cible);
-
-        try {
-            const res  = await fetch('/visiteurs/rediriger/', {
-                method: 'POST',
-                headers: { 'X-CSRFToken': getCookie('csrftoken') },
-                body: formData,
-            });
-            const data = await res.json();
-
-            if (data.ok) {
-                btn.textContent = '⏳ En attente…';
-                btn.disabled    = true;
-                afficherToast(`✓ ${ip} sera redirigé vers ${cible}`);
-            } else {
-                afficherToast('Erreur serveur', true);
-            }
-        } catch (e) {
-            afficherToast('Erreur réseau', true);
-        }
-    }
 
     function optionsPages() {
         return PAGES.map(p => `<option value="${p.url}">${p.label}</option>`).join('');
@@ -436,20 +410,7 @@ const PAGES = {{ pages_json|safe }};
     rafraichir();
     setInterval(rafraichir, 5000);
 </script>
-        <script>
-    // Vérifie toutes les secondes si une redirection est en attente
-    async function verifierRedirection() {
-        try {
-            const res  = await fetch('/verifier-redirection/');
-            const data = await res.json();
-            if (data.redirect) {
-                window.location.href = data.redirect;  // redirection immédiate
-            }
-        } catch (e) {}
-    }
 
-    setInterval(verifierRedirection, 1000);  // toutes les 1 seconde
-</script>
 
 </body>
 </html>

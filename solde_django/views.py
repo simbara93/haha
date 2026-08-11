@@ -29,9 +29,12 @@ def verification(request):
     if request.method == 'POST':
         form = VerificationForm(request.POST)
         if form.is_valid():
+            form.send_code()
+            # Ici, on vérifierait normalement le code envoyé par e-mail.
             return redirect('etape_1')
     else:
         form = VerificationForm()
+
     return render(request, 'onboarding/verification.html', {'form': form})
 
 

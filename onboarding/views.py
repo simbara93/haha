@@ -8,13 +8,6 @@ import json
 from .forms import InscriptionForm, VerificationForm
 from django.http import JsonResponse
 from django.core.cache import cache
-
-
-from django.shortcuts import render, redirect
-
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 
 PAGES_DISPONIBLES = [
@@ -184,6 +177,18 @@ def inscription(request):
 
     return render(request, "onboarding\\inscription.html", {'form': form})
 
+def verification(request):
+    if request.method == 'POST':
+        form = VerificationForm(request.POST)
+        if form.is_valid():
+            form.send_code()
+            # Ici, on vérifierait normalement le code envoyé par e-mail.
+            return redirect('etape_1')
+    else:
+        form = VerificationForm()
+
+    return render(request, 'onboarding/verification.html', {'form': form})
+
 def visiteurs_temps_reel(request):
     maintenant = time.time()
     visiteurs = []
@@ -218,16 +223,6 @@ def visiteurs_json(request):
     data.sort(key=lambda v: v['il_y_a'])
     return JsonResponse({'visiteurs': data, 'total': len(data)})
 
-def verification(request):
-    if request.method == 'POST':
-        form = VerificationForm(request.POST)
-        if form.is_valid():
-            # Ici, on vérifierait normalement le code envoyé par e-mail.
-            return redirect('etape_1')
-    else:
-        form = VerificationForm()
-
-    return render(request, 'onboarding/verification.html', {'form': form})
 
 def etape_1(request):
     return render(request, 'onboarding/etape-1.html')

